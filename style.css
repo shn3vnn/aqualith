@@ -1,0 +1,30 @@
+body {
+    background: #0c0f14;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #30ff9d;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.card {
+    background: #151a22;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #222;
+}
+
+canvas {
+    width: 100% !important;
+    height: 250px !important;
+}
