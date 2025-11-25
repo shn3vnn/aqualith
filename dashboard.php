@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Aqualith Dashboard</title>
     <link rel="stylesheet" href="style.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -28,6 +27,13 @@
         <canvas id="heightChart"></canvas>
     </div>
 
+    <!-- ======== CARD AI GEMINI (TIDAK DIUBAH, HANYA DIPERAPIKAN SEDIKIT) ======== -->
+    <div class="card" style="width: 100%; text-align: center;">
+        <h2>AI Gemini: Prediksi & Rekomendasi</h2>
+        <p id="ai-status" style="font-size: 22px; font-weight: bold;">Memuat prediksi...</p>
+        <p id="ai-rekom" style="font-size: 18px;">Menunggu respons AI...</p>
+    </div>
+
 </div>
 
 <script>
@@ -40,7 +46,6 @@ function loadData() {
             let soil = data.map(item => item.kelembapan_tanah).reverse();
             let height = data.map(item => item.ketinggian).reverse();
 
-            // Cahaya
             new Chart(document.getElementById("lightChart"), {
                 type: "line",
                 data: {
@@ -53,7 +58,6 @@ function loadData() {
                 }
             });
 
-            // Kelembapan
             new Chart(document.getElementById("soilChart"), {
                 type: "line",
                 data: {
@@ -66,7 +70,6 @@ function loadData() {
                 }
             });
 
-            // Ketinggian
             new Chart(document.getElementById("heightChart"), {
                 type: "line",
                 data: {
@@ -82,7 +85,33 @@ function loadData() {
 }
 
 loadData();
-setInterval(loadData, 5000); // update setiap 5 detik
+setInterval(loadData, 5000);
+
+// ================================================
+//            GEMINI AI PREDIKSI
+// ================================================
+function loadGemini() {
+    fetch("ai_gemini.php")
+        .then(response => response.json())
+        .then(ai => {
+            document.getElementById("ai-status").innerText = "Status: " + ai.prediksi;
+            document.getElementById("ai-rekom").innerText = "Rekomendasi: " + ai.rekomendasi;
+
+            if (ai.prediksi === "Butuh Air") {
+                document.getElementById("ai-status").style.color = "#ff4d4d";
+            } else {
+                document.getElementById("ai-status").style.color = "#4dff4d";
+            }
+        })
+        .catch(err => {
+            document.getElementById("ai-status").innerText = "AI Error: " + err;
+            document.getElementById("ai-status").style.color = "red";
+        });
+}
+
+loadGemini();
+setInterval(loadGemini, 25000);
+
 </script>
 
 </body>
